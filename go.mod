@@ -1,4 +1,4 @@
-module go-tun2ssh-route
+module github.com/project-snail/go-tun2ssh-route
 
 go 1.13
 

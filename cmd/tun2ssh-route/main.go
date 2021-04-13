@@ -6,8 +6,8 @@ import (
 	"github.com/eycorsican/go-tun2socks/common/log"
 	_ "github.com/eycorsican/go-tun2socks/common/log/simple" // Register a simple logger.
 	"github.com/eycorsican/go-tun2socks/core"
-	tunRoute "go-tun2ssh-route/core/route"
-	"go-tun2ssh-route/core/tun"
+	tunRoute "github.com/project-snail/go-tun2ssh-route/core/route"
+	"github.com/project-snail/go-tun2ssh-route/core/tun"
 	"golang.org/x/crypto/ssh"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
