@@ -13,18 +13,11 @@ func (route *RouteRow) Add() error {
 
 	rows, err := table.Routes()
 	if err != nil {
-		panic(err.Error())
+		log.Fatalf("get routes failed %v", err.Error())
 	}
-
-	localIp, err := yijunjunRoute.GetLocalIp()
-	if err != nil {
-		panic(err.Error())
-	}
-
-	localIpUint := yijunjunRoute.Inet_aton(localIp, false)
 
 	for _, row := range rows {
-		if row.ForwardNextHop == localIpUint {
+		if row.ForwardDest == 0 {
 			// route add route.Addr mask route.Mask route.Gateway
 			row.ForwardDest = yijunjunRoute.Inet_aton(route.Addr, false)
 			row.ForwardMask = yijunjunRoute.Inet_aton(route.Mask, false)
