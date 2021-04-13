@@ -117,6 +117,19 @@ func registerSshConnHandler(sshInfo SshInfo) {
 	}
 
 	core.RegisterTCPConnHandler(&tun.SshTcpHandler{Client: client})
+	core.RegisterUDPConnHandler(&DiscardUDPConnHandler{})
+}
+
+type DiscardUDPConnHandler struct {
+}
+
+func (h *DiscardUDPConnHandler) ReceiveTo(conn core.UDPConn, data []byte, addr *net.UDPAddr) error {
+	conn.Close()
+	return nil
+}
+func (h *DiscardUDPConnHandler) Connect(conn core.UDPConn, target *net.UDPAddr) error {
+	conn.Close()
+	return nil
 }
 
 type RouteInfo struct {
