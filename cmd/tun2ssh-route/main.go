@@ -6,6 +6,7 @@ import (
 	"github.com/eycorsican/go-tun2socks/common/log"
 	_ "github.com/eycorsican/go-tun2socks/common/log/simple" // Register a simple logger.
 	"github.com/eycorsican/go-tun2socks/core"
+	"github.com/project-snail/go-tun2ssh-route/core/handler"
 	tunRoute "github.com/project-snail/go-tun2ssh-route/core/route"
 	"github.com/project-snail/go-tun2ssh-route/core/tun"
 	"golang.org/x/crypto/ssh"
@@ -16,6 +17,7 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
+	"time"
 )
 
 func main() {
@@ -117,19 +119,7 @@ func registerSshConnHandler(sshInfo SshInfo) {
 	}
 
 	core.RegisterTCPConnHandler(&tun.SshTcpHandler{Client: client})
-	core.RegisterUDPConnHandler(&DiscardUDPConnHandler{})
-}
-
-type DiscardUDPConnHandler struct {
-}
-
-func (h *DiscardUDPConnHandler) ReceiveTo(conn core.UDPConn, data []byte, addr *net.UDPAddr) error {
-	conn.Close()
-	return nil
-}
-func (h *DiscardUDPConnHandler) Connect(conn core.UDPConn, target *net.UDPAddr) error {
-	conn.Close()
-	return nil
+	core.RegisterUDPConnHandler(handler.NewUDPDirectHandler(time.Second * 10))
 }
 
 type RouteInfo struct {
